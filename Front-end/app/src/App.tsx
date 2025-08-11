@@ -6,6 +6,7 @@ import Footer from "@components/Footer"
 import { useLocation } from 'react-router-dom';
 import { Suspense, useEffect, useRef } from 'react';
 import Forms from 'forms';
+import Commerce from 'Commerce';
 
 
 function Dinamic_Content(){
@@ -25,7 +26,7 @@ function Dinamic_Content(){
           <Route path='/' element={<Initialization/>} />
           <Route path='*'errorElement={<NotFound/>} element= {<NotFound/>}/>
           <Route path='/form:mode' element= {<Forms/>}/>
-
+          <Route path='/commerce:session' element={<Commerce/>}/>
       </Routes>
     </Suspense>
     <Footer  resource= {location} ref={refFooter}></Footer>

@@ -1,11 +1,22 @@
 import { useEffect, useRef, useState } from "react"
-import type{ RefObject } from "react"
-import { useLocation, useParams } from "react-router-dom";
+import type{ ErrorInfo, RefObject } from "react"
+import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+
+import verifySesion from "@scripts/user";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+
 export default function Forms(){
 
     const location = useLocation();
     const {mode} = useParams<string>();
-
+    const navigate = useNavigate();
     type FormRefs = {
         formSign: RefObject<HTMLDivElement | null>;
         formLog: RefObject<HTMLDivElement | null>;
@@ -59,22 +70,113 @@ export default function Forms(){
                 })
         decition(presentForm!);
     }, [presentForm])
+
+    //
+    type ObjectUser = {
+        IDENTIFICACION_USUARIO: string;
+        PASSWORD: string;
+    }
+    const[signForm, setSign] = useState<ObjectUser>({
+        IDENTIFICACION_USUARIO: "",
+        PASSWORD: ""
+    })
+    const senf_form_sign = async()=>{
+        try{
+            const identificacionUsuario = await verifySesion(signForm, "sign");
+            navigate(`/commerce?sessionid=${encodeURI(identificacionUsuario?.toString())}`)
+            return;
+        }
+        catch(error: any){
+            console.log(error)
+            throw new Error(error)
+        }
+    }
+    const sendFormLog = async()=>{
+        try{
+            await 
+        }
+        catch(error: any){
+            console.log(error);
+            throw new Error(error)
+        }
+    }
+
+    const [showPassword, setShowPassword] = useState(false);
+
+    
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
+
+    const handleMouseUpPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
+
+    
     return (
-        <>
+        <>  <div className="message">
+                <label></label>
+            </div>
             <div className="singUp" ref={stateForm.formSign}>
                 <div>
-                    <form method="POST" className="forms">
-
-                        <button type="submit"></button>
+                    <form className="forms">
+                        <TextField
+                            id="outlined-multiline-flexible"
+                            label="Identificacion del usuario"
+                            multiline
+                            maxRows={4}
+                            />
+                        <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                            <OutlinedInput
+                                id="outlined-adornment-password"
+                                type={showPassword ? 'text' : 'password'}
+                                endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                    aria-label={
+                                        showPassword ? 'hide the password' : 'display the password'
+                                    }
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                    onMouseUp={handleMouseUpPassword}
+                                    edge="end"
+                                    >
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                                }
+                                label="Password"
+                            />
+                            </FormControl>
+                            <FormControl fullWidth sx={{ m: 1 }}>
+                            <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
+                            <OutlinedInput
+                                id="outlined-adornment-amount"
+                                startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                                label="Amount"
+                            />
+                            </FormControl>
+                        <Button variant="text" color="secondary" onClick={async()=>{
+                            senf_form_sign()
+                        }}>
+                            Enviar
+                        </Button>
                     </form>
                 </div>
             </div>
 
             <div className="logIn" ref={stateForm.formLog}>
                 
-                <form method="POST"className="forms">
+                <form className="forms">
 
-                        <button type="submit"></button>
+                        <Button variant="text" color="secondary" onClick={async()=>{
+                            senf_form_sign()
+                        }}>
+                            Enviar
+                        </Button>
                     </form>
             </div>
         </>
