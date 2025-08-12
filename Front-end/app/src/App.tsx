@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom';
 import { Suspense, useEffect, useRef } from 'react';
 import Forms from 'forms';
 import Commerce from 'Commerce';
+import RecoverPassword from 'password';
 
 
 function Dinamic_Content(){
@@ -27,6 +28,7 @@ function Dinamic_Content(){
           <Route path='*'errorElement={<NotFound/>} element= {<NotFound/>}/>
           <Route path='/form:mode' element= {<Forms/>}/>
           <Route path='/commerce:session' element={<Commerce/>}/>
+          <Route path='/arrangePassword:user' element={<RecoverPassword/>}/>
       </Routes>
     </Suspense>
     <Footer  resource= {location} ref={refFooter}></Footer>
