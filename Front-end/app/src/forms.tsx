@@ -3,14 +3,18 @@ import type{ ErrorInfo, RefObject } from "react"
 import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-
-import verifySesion from "@scripts/user";
+import { verifySesion } from "@scripts/user";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import Visibility from '@mui/icons-material/Visibility';
+import { inputBaseClasses } from '@mui/material/InputBase';
+
+
 
 export default function Forms(){
 
@@ -74,12 +78,25 @@ export default function Forms(){
     //
     type ObjectUser = {
         IDENTIFICACION_USUARIO: string;
-        PASSWORD: string;
+        NOMBRE_SISTEMA: string;
+        NOMBRE_USUARIO: string;
+        APELLIDO_USUARIO: string;
+        GENERO_USUARIO: string;
+        EDAD_USUARIO: string;
+        CORREO_ELECTRONICO: string;
+        FECHA_NACIMIENTO: string;
+        DIRECCION_USUARIO: string;
+        CIUDAD_RESIDENCIA: string;
+        CONTRASENA_USUARIO: string;
+        CATEGORIA_USUARIO: string;
     }
-    const[signForm, setSign] = useState<ObjectUser>({
+    
+    const[signForm, setSign] = useState<{IDENTIFICACION_USUARIO: string, CONTRASENA_USUARIO: string}>({
         IDENTIFICACION_USUARIO: "",
-        PASSWORD: ""
+        CONTRASENA_USUARIO: ""
     })
+    const [logForm, setLog] = useState<ObjectUser>()
+
     const senf_form_sign = async()=>{
         try{
             const identificacionUsuario = await verifySesion(signForm, "sign");
@@ -93,7 +110,6 @@ export default function Forms(){
     }
     const sendFormLog = async()=>{
         try{
-            await 
         }
         catch(error: any){
             console.log(error);
@@ -114,6 +130,21 @@ export default function Forms(){
         event.preventDefault();
     };
 
+    const changFormSign = (key: string, value: string) => {
+        setSign(prevText => ({
+            ...prevText,     // Keep previous state
+            [key]: value     // Update the given key
+        }));
+        };
+
+    const changFormLog = (key: string, value: string) => {
+        setLog(prevText => ({
+            ...(prevText!) ,    // Keep previous state
+            [key]: value     // Update the given key
+        }));
+        };
+
+
     
     return (
         <>  <div className="message">
@@ -127,9 +158,12 @@ export default function Forms(){
                             label="Identificacion del usuario"
                             multiline
                             maxRows={4}
+                            onChange={(event)=>{
+                                changFormSign("IDENTIFICACION_USUARIO", event.target.value)
+                            }}
                             />
                         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                            <InputLabel htmlFor="outlined-adornment-password">Contraseña</InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-password"
                                 type={showPassword ? 'text' : 'password'}
@@ -148,17 +182,16 @@ export default function Forms(){
                                     </IconButton>
                                 </InputAdornment>
                                 }
-                                label="Password"
+                                label="Contraseña"
                             />
                             </FormControl>
-                            <FormControl fullWidth sx={{ m: 1 }}>
-                            <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
-                            <OutlinedInput
-                                id="outlined-adornment-amount"
-                                startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                label="Amount"
-                            />
-                            </FormControl>
+                            <label>
+                                Olvidaste tu contraseña? 
+                                <a href="">
+                                    Oprime aquí!
+                                </a>
+                            </label>
+                       
                         <Button variant="text" color="secondary" onClick={async()=>{
                             senf_form_sign()
                         }}>
@@ -171,6 +204,66 @@ export default function Forms(){
             <div className="logIn" ref={stateForm.formLog}>
                 
                 <form className="forms">
+                    <TextField
+                        required
+                        id="outlined-required"
+                        label="Required"
+                        placeholder="Identificacion del usuario"
+                        onChange={(event) =>{
+                            changFormLog("IDENTIFICACION_USUARIO", event.target.value)
+                        }}
+                        />
+                        <TextField
+                            id="input-with-icon-textfield"
+                            label="Nombre de usuario"
+                            placeholder="Elige un nombre de uusario"
+                            slotProps={{
+                            input: {
+                                startAdornment: (
+                                <InputAdornment position="start">
+                                    <AccountCircle />
+                                </InputAdornment>
+                                ),
+                            },
+                            }}
+                            variant="standard"
+                            onChange={(event) =>{
+                                    changFormLog("NOMBRE_SISTEMA", event.target.value)
+                                }}
+                            
+                        />
+                        <TextField
+                            id="standard-suffix-shrink"
+                            label="Correo electrónico"
+                            variant="standard"
+                            slotProps={{
+                            htmlInput: {
+                                sx: { textAlign: 'right' },
+                            },
+                            input: {
+                                endAdornment: (
+                                <InputAdornment
+                                    position="end"
+                                    sx={{
+                                    alignSelf: 'flex-end',
+                                    margin: 0,
+                                    marginBottom: '5px',
+                                    opacity: 0,
+                                    pointerEvents: 'none',
+                                    [`[data-shrink=true] ~ .${inputBaseClasses.root} > &`]: {
+                                        opacity: 1,
+                                    },
+                                    }}
+                                >
+                                    @gmail.com
+                                </InputAdornment>
+                                ),
+                            },
+                            }}
+                            onChange={(event) =>{
+                                changFormLog("CORREO_ELECTRONICO", event.target.value)
+                            }}
+                        />
 
                         <Button variant="text" color="secondary" onClick={async()=>{
                             senf_form_sign()
