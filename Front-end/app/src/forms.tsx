@@ -13,6 +13,11 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import Visibility from '@mui/icons-material/Visibility';
 import { inputBaseClasses } from '@mui/material/InputBase';
+import FormLabel from "@mui/material/FormLabel";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Radio from "@mui/material/Radio";
+import Slider from "@mui/material/Slider";
 
 
 
@@ -144,7 +149,9 @@ export default function Forms(){
         }));
         };
 
-
+    function valuetext(value: number) {
+        return `${value}`;
+        }
     
     return (
         <>  <div className="message">
@@ -184,7 +191,7 @@ export default function Forms(){
                                 }
                                 label="Contraseña"
                             />
-                            </FormControl>
+                        </FormControl>
                             <label>
                                 Olvidaste tu contraseña? 
                                 <a href="">
@@ -233,6 +240,59 @@ export default function Forms(){
                             
                         />
                         <TextField
+                            required
+                            id="outlined-required"
+                            label="Required"
+                            placeholder="Nombre del usuario"
+                            onChange={(event) =>{
+                                changFormLog("NOMBRE_USUARIO", event.target.value)
+                            }}
+                        />
+                        <TextField
+                            required
+                            id="outlined-required"
+                            label="Required"
+                            placeholder="Apellido del usuario"
+                            onChange={(event) =>{
+                                changFormLog("APELLIDO_USUARIO", event.target.value)
+                            }}
+                        />
+                        <FormControl>
+                            <FormLabel id="demo-row-radio-buttons-group-label">Genero</FormLabel>
+                            <RadioGroup
+                                row
+                                aria-labelledby="demo-row-radio-buttons-group-label"
+                                name="row-radio-buttons-group"
+                            >
+                                <FormControlLabel value="female" control={<Radio onChange={(event)=>{
+                                    changFormLog("GENERO_USUARIO", "F");
+                                }}/>} label="F" />
+                                <FormControlLabel value="male" control={<Radio onChange={(event)=>{
+                                    changFormLog("GENERO_USUARIO", "M");
+                                }}/>} label="M" />
+                                <FormControlLabel value="other" control={<Radio onChange={(event)=>{
+                                    changFormLog("GENERO_USUARIO", "O");
+                                }}/>} label="Otro" />
+                                <FormControlLabel
+                                value="disabled"
+                                disabled
+                                control={<Radio />}
+                                label="other"
+                                />
+                            </RadioGroup>
+                        </FormControl>
+                        <Slider
+                            aria-label="Temperature"
+                            defaultValue={30}
+                            getAriaValueText={valuetext}
+                            valueLabelDisplay="auto"
+                            shiftStep={30}
+                            step={1}
+                            marks
+                            min={10}
+                            max={110}
+                            />
+                        <TextField
                             id="standard-suffix-shrink"
                             label="Correo electrónico"
                             variant="standard"
@@ -266,7 +326,7 @@ export default function Forms(){
                         />
 
                         <Button variant="text" color="secondary" onClick={async()=>{
-                            senf_form_sign()
+                            sendFormLog()
                         }}>
                             Enviar
                         </Button>
